@@ -7,11 +7,38 @@ services:
       args:
       - USER=1000
       - GROUP=1000
+      - CA_PORT=10433
       dockerfile: ca.dockerfile
-    environment:
+    environment: &env
+      CA_URL: "https://ca:10433"
       CA_PORT: "10433"
-    network_mode: host
+      STEPPATH: /.step
+      SERVER_HOSTNAME: localhost
+    hostname: ca
+    expose:
+    - "10433"
     volumes:
     - type: bind
       source: ./build/ca
       target: /.step
+    - type: bind
+      source: ./files
+      target: /files
+  server:
+    image: samples-step-ca:server
+    build:
+      context: ./
+      args:
+      - USER=1000
+      - GROUP=1000
+      dockerfile: server.dockerfile
+    environment: *env
+    volumes:
+    - type: bind
+      source: ./build/server
+      target: /.step
+    - type: bind
+      source: ./files
+      target: /files
+    links:
+    - ca

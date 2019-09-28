@@ -1,5 +1,6 @@
 ARG USER
 ARG GROUP
+ARG CA_PORT
 
 FROM ubuntu:bionic
 
@@ -9,5 +10,7 @@ RUN dpkg -i /files/*.deb && \
     chown $USER:$GROUP /.step -R
 
 USER $USER:$GROUP
+
+EXPOSE $CA_PORT
 
 ENTRYPOINT [ "bash", "/files/ca.docker-entrypoint.sh" ]

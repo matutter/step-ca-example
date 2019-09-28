@@ -1,0 +1,4 @@
+certs/
+config/
+*.crt
+*.key
