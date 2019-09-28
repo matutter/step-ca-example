@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  ca:
+    image: samples-step-ca:ca
+    build:
+      context: ./
+      args:
+      - USER=1000
+      - GROUP=1000
+      dockerfile: ca.dockerfile
+    environment:
+      CA_PORT: "10433"
+    network_mode: host
+    volumes:
+    - type: bind
+      source: ./build/ca
+      target: /.step
