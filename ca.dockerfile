@@ -1,15 +1,21 @@
+FROM ubuntu:bionic
+
 ARG USER
-ARG GROUP
+ARG UID
 ARG CA_PORT
 
-FROM ubuntu:bionic
+ENV NUSER $USER
+ENV NUID  $UID
+
+RUN echo $NUID $NUSER
+RUN adduser --disabled-password --gecos "" --uid $NUID $NUSER
 
 ADD files/ /files
 RUN dpkg -i /files/*.deb && \
     mkdir /.step && \
-    chown $USER:$GROUP /.step -R
+    chown $NUSER /.step -R
 
-USER $USER:$GROUP
+USER $NUSER
 
 EXPOSE $CA_PORT
 

@@ -5,8 +5,8 @@ services:
     build:
       context: ./
       args:
-      - USER=1000
-      - GROUP=1000
+      - USER=${USER}
+      - UID=1000
       - CA_PORT=10433
       dockerfile: ca.dockerfile
     environment: &env
@@ -29,8 +29,8 @@ services:
     build:
       context: ./
       args:
-      - USER=1000
-      - GROUP=1000
+      - USER=${USER}
+      - UID=1000
       dockerfile: server.dockerfile
     environment: *env
     volumes:
@@ -40,5 +40,7 @@ services:
     - type: bind
       source: ./files
       target: /files
+    depends_on:
+    - ca
     links:
     - ca
